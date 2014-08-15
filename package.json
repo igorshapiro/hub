@@ -1,6 +1,17 @@
 {
   "name": "servicehub",
   "dependencies": {
-    "express": ""
+    "express": "",
+    "request": "",
+    "body-parser": "",
+    "underscore": ""
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "chai": "",
+    "sinon-chai": "",
+    "grunt-mocha-test": "",
+    "supertest": "",
+    "nock": ""
   }
 }
