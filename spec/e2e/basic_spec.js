@@ -16,6 +16,10 @@ describe("ServiceHub", function(){
     hub = new Hub({manifest: manifest});
   });
 
+  afterEach(function() {
+    hub.close();
+  });
+
   it("It delivers an event to subscriber", function(done) {
     var msg = {type: 'order_completed'};
     var fake = nock('http://bill.com')

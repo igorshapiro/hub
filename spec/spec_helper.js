@@ -1,3 +1,6 @@
+// var lj = require('longjohn');
+// lj.async_trace_limit = -1;
+
 var chai = require('chai'),
     sinonChai = require('sinon-chai');
 
