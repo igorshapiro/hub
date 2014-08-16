@@ -4,7 +4,9 @@
     "express": "",
     "request": "",
     "body-parser": "",
-    "underscore": ""
+    "underscore": "",
+    "amqplib": "",
+    "when": ""
   },
   "devDependencies": {
     "grunt": "^0.4.5",
