@@ -6,6 +6,7 @@ var chai = require('chai'),
 
 var WebServer = require('./../lib/web_server.js');
 
+global.ENV = 'test';
 global.expect = chai.expect;
 global.sinon = require('sinon');
 global.request = require('supertest');

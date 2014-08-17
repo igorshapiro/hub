@@ -6,7 +6,9 @@
     "body-parser": "",
     "underscore": "",
     "amqplib": "",
-    "when": ""
+    "when": "",
+    "securerandom": "",
+    "mongojs": ""
   },
   "devDependencies": {
     "grunt": "^0.4.5",
