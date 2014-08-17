@@ -1,0 +1,3 @@
+hub: MANIFEST=../scripts/benchmark/services.json PORT=8020 node ../../server.js
+orders: PORT=8022 node orders_service.js
+billing: PORT=8021 node billing_service.js

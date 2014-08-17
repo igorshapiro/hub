@@ -1,0 +1,14 @@
+{
+  "services": {
+    "orders": {
+      "publish": ["order_completed"],
+      "subscribe": ["order_paid"],
+      "endpoint": "http://localhost:8022/:message_type"
+    },
+    "billing": {
+      "subscribe": ["order_completed"],
+      "publish": ["order_paid"],
+      "endpoint": "http://localhost:8021/:message_type"
+    }
+  }
+}
