@@ -1,3 +1,4 @@
+require('long-stack-traces');
 // var lj = require('longjohn');
 // lj.async_trace_limit = -1;
 

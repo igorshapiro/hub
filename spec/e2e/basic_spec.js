@@ -13,7 +13,7 @@ describe("ServiceHub", function(){
   var hub = null;
 
   beforeEach(function() {
-    hub = new Hub({manifest: manifest});
+    hub = new Hub({manifest: manifest, drainQueues: true});
   });
 
   afterEach(function(done) {
@@ -55,6 +55,6 @@ describe("ServiceHub", function(){
     setTimeout(function() {
       expect(retries).to.equal(msg.max_attempts);
       done();
-    }, 100);
+    }, 200);
   });
 });
