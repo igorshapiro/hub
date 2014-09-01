@@ -8,7 +8,8 @@
     "amqplib": "",
     "when": "",
     "securerandom": "",
-    "mongojs": ""
+    "mongojs": "",
+    "mongojs-logger": ""
   },
   "devDependencies": {
     "grunt": "^0.4.5",
