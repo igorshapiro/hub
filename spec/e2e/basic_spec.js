@@ -11,13 +11,18 @@ describe("ServiceHub", function(){
     }
   };
   var hub = null;
+  var repo = null;
 
   beforeEach(function() {
     hub = new Hub({manifest: manifest, drainQueues: true});
+    repo = hub.services_repository;
   });
 
   afterEach(function(done) {
-    hub.close().done(function() { done(); });
+    hub.close().done(function() {
+      require('../../lib/resource_pool.js').reset();
+      done();
+    });
   });
 
   it("delivers an event to subscriber", function(done) {
@@ -37,24 +42,53 @@ describe("ServiceHub", function(){
       });
   });
 
-  it("retries message up to max_attempts times handler failed", function(done) {
+  describe("Failing handler", function() {
     var retries = 0;
     var msg = {type: 'order_completed', max_attempts: 10};
-    var fake = nock('http://bill.com')
-      .post('/order_completed')
-      .times(10)
-      .reply(500, function(uri, body) {
-        retries++;
-      });
+    var timeoutMillis = 200;
 
-    request(hub.webApp).post('/api/v1/messages').send(msg)
-      .end(function(err, res){
-        expect(err).to.equal(null);
-      });
+    function createFakeHandler() {
+      return nock('http://bill.com')
+        .post('/order_completed')
+        .times(10)
+        .reply(500, function(uri, body) {
+          retries++;
+        });
+    }
+    function publishMessage(msg) {
+      request(hub.webApp).post('/api/v1/messages').send(msg)
+        .end(function(err, res){
+          expect(err).to.equal(null);
+        });
+    }
 
-    setTimeout(function() {
-      expect(retries).to.equal(msg.max_attempts);
-      done();
-    }, 200);
+    it("retries message up to max_attempts times handler failed", function(done) {
+      createFakeHandler();
+      publishMessage(msg);
+
+      setTimeout(function() {
+        expect(retries).to.equal(msg.max_attempts);
+        done();
+      }, timeoutMillis);
+    });
+
+    it("Adds the message to dead storage", function(done) {
+      var service = repo.getService("billing");
+      var pool = require('./../../lib/resource_pool.js');
+
+      createFakeHandler();
+      publishMessage(msg);
+      setTimeout(function() {
+        pool.deadStorage.get(service)
+          .then(function(storage) {
+            return storage.getAll();
+          })
+          .then(function(deadMessages) {
+            expect(deadMessages.length).to.equal(1);
+            done();
+          })
+          .done();
+      }, timeoutMillis);
+    });
   });
 });
